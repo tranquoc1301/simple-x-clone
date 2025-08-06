@@ -1,10 +1,13 @@
-import { Image } from "@imagekit/next";
-import { ImageKitProvider } from "@imagekit/next";
+import Feed from "@/components/Feed";
+import Share from "@/components/Share";
+import NavBar from "@/components/NavBar";
 
 const Homepage = () => {
   return (
-    <div className="">
-      <Image src="general/post.jpeg" width={600} height={600} alt="cover" />
+    <div className="bg-black min-h-screen">
+      <NavBar />
+      <Share />
+      <Feed />
     </div>
   );
 };

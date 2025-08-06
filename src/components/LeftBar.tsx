@@ -63,7 +63,7 @@ const menuList = [
     icon: "more.svg",
   },
 ];
-export default function LeftBar() {
+const LeftBar = () => {
   return (
     <div className="h-screen sticky top-0 flex flex-col justify-between pt-2 pb-8">
       {/* Logo menu buttons */}
@@ -127,4 +127,6 @@ export default function LeftBar() {
       </div>
     </div>
   );
-}
+};
+
+export default LeftBar;

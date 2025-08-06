@@ -23,4 +23,5 @@ body {
   --color-icon-blue: #1d9bf0;
   --color-icon-green: #00ba7c;
   --color-icon-pink: #f91880;
+  --color-nav-hover: rgba(231, 233, 234, 0.1);
 }
