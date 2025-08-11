@@ -52,10 +52,10 @@ const PostInteractions: React.FC = () => {
         {interactions.map((item) => (
           <div
             key={item.id}
-            className={`flex items-center gap-1.5 cursor-pointer group ${item.hoverClass}`}
+            className={`flex items-center gap-0.5 cursor-pointer group ${item.hoverClass}`}
           >
-            <div className="relative p-2 rounded-full transition-all duration-200">
-              <div className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-20 transition-opacity duration-200"></div>
+            <div className="group relative p-2 rounded-full transition-all duration-200">
+              <div className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
               <svg
                 width="20"
                 height="20"
@@ -66,20 +66,27 @@ const PostInteractions: React.FC = () => {
                 <path className="fill-current" d={item.path} />
               </svg>
             </div>
-            <span className="text-sm font-medium">{item.count}</span>
+            <span className="text-sm font-medium transition-colors duration-200">
+              {item.count}
+            </span>
           </div>
         ))}
       </div>
 
       {/* Actions without counts */}
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center">
         {actions.map((item) => (
-          <div key={item.id} className="cursor-pointer hover:text-icon-blue">
+          <div
+            key={item.id}
+            className="group relative p-2 rounded-full transition-all duration-200 cursor-pointer hover:text-icon-blue"
+          >
+            <div className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
             <svg
               width="20"
               height="20"
               viewBox="0 0 24 24"
               aria-label={item.label}
+              className="relative z-10"
             >
               <path className="fill-current" d={item.path} />
             </svg>
