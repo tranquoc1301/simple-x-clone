@@ -1,4 +1,11 @@
+"use client";
+
 import { Image } from "@imagekit/next";
+import NextImage from "next/image";
+import { useState } from "react";
+import { cn } from "@/utils/cn";
+import { UploadMedia } from "@/actions/UploadMediaAction";
+import ImageEditor from "./ImageEditor";
 
 const OptionList = () => {
   const options = [
@@ -15,16 +22,29 @@ const OptionList = () => {
       {options.map((option) => (
         <div
           key={option.alt}
-          className="group relative cursor-pointer p-2 rounded-full transition-all duration-200"
+          className={cn(
+            "group relative cursor-pointer p-2 rounded-full",
+            "transition-all duration-200"
+          )}
         >
-          <div className="absolute inset-0 rounded-full bg-icon-blue opacity-0 group-hover:opacity-15 transition-opacity duration-200"></div>
-          <Image
-            src={option.src}
-            alt={option.alt}
-            width={20}
-            height={20}
-            className="relative z-10"
+          <div
+            className={cn(
+              "absolute inset-0 rounded-full bg-icon-blue",
+              "opacity-0 group-hover:opacity-15",
+              "transition-opacity duration-200"
+            )}
           />
+
+          {option.alt === "image" ? (
+            <label
+              htmlFor="media"
+              className={cn("cursor-pointer block relative z-10")}
+            >
+              <Image src={option.src} alt={option.alt} width={20} height={20} />
+            </label>
+          ) : (
+            <Image src={option.src} alt={option.alt} width={20} height={20} />
+          )}
         </div>
       ))}
     </div>
@@ -32,34 +52,107 @@ const OptionList = () => {
 };
 
 const PostComposer = () => {
+  const [media, setMedia] = useState<File | null>(null);
+
+  const previewURL = media ? URL.createObjectURL(media) : null;
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [settings, setSettings] = useState<{
+    type: "original" | "wide" | "square";
+    sensitive: boolean;
+  }>({
+    type: "original",
+    sensitive: false,
+  });
+
+  const handleMediaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setMedia(file);
+    }
+  };
+
   return (
-    <div className="p-4 flex gap-4">
+    <form className={cn("p-4 flex gap-4")} action={UploadMedia}>
       {/* Avatar */}
-      <div className="w-10 h-10 rounded-full overflow-hidden">
+      <div className={cn("w-10 h-10 rounded-full overflow-hidden")}>
         <Image src="general/avatar.jpg" alt="avatar" width={40} height={40} />
       </div>
 
       {/* Content */}
-      <div className="flex-1 flex flex-col gap-4">
+      <div className={cn("flex-1 flex flex-col gap-3")}>
         {/* Input */}
         <input
           type="text"
+          name="content"
           placeholder="What's happening?"
-          className="py-2 text-xl bg-transparent outline-none placeholder:text-text-gray"
+          className={cn(
+            "py-2 text-xl bg-transparent outline-none",
+            "placeholder:text-text-gray"
+          )}
         />
+        {
+          // Preview selected media
+          previewURL && (
+            <div className="relative overflow-hidden">
+              <NextImage
+                src={previewURL}
+                alt="preview"
+                width={600}
+                height={600}
+                className="object-cover w-full h-full rounded-2xl border border-border-gray"
+              />
+              <div
+                className={cn(
+                  "absolute top-2 left-2 py-1 px-4",
+                  "text-sm font-semibold text-white",
+                  "bg-black/50 rounded-full cursor-pointer",
+                  "hover:bg-black/70 transition-colors duration-200"
+                )}
+                onClick={() => setIsEditorOpen(true)}
+              >
+                Edit
+              </div>
+            </div>
+          )
+        }
+
+        {/* Editor */}
+        {isEditorOpen && previewURL && (
+          <ImageEditor
+            onClose={() => setIsEditorOpen(false)}
+            previewURL={previewURL}
+            settings={settings}
+            setSettings={setSettings}
+          />
+        )}
 
         {/* Divider */}
-        <div className="h-px bg-border-gray"></div>
+        <div className={cn("h-px bg-border-gray")} />
 
         {/* Bottom Section */}
-        <div className="flex items-center justify-between">
+        <div className={cn("flex items-center justify-between")}>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleMediaChange}
+            className="hidden"
+            id="media"
+            name="media"
+          />
           <OptionList />
-          <button className="bg-white text-black font-bold px-6 py-2 rounded-full">
+          <button
+            type="submit"
+            className={cn(
+              "bg-white text-black font-bold px-6 py-2 rounded-full",
+              "shadow-sm hover:brightness-90",
+              "transition-all duration-200 cursor-pointer"
+            )}
+          >
             Post
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
