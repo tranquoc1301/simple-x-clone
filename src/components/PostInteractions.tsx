@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/utils/cn";
+
 const PostInteractions: React.FC = () => {
   const interactions = [
     {
@@ -46,16 +48,35 @@ const PostInteractions: React.FC = () => {
   ];
 
   return (
-    <div className="flex items-center justify-between gap-16 text-text-gray">
+    <div
+      className={cn(
+        "flex items-center justify-between gap-16",
+        "text-text-gray"
+      )}
+    >
       {/* Interactions with counts */}
-      <div className="flex items-center justify-between flex-1">
+      <div className={cn("flex items-center justify-between flex-1")}>
         {interactions.map((item) => (
           <div
             key={item.id}
-            className={`flex items-center gap-0.5 cursor-pointer group ${item.hoverClass}`}
+            className={cn(
+              "flex items-center gap-0.5 cursor-pointer group",
+              item.hoverClass
+            )}
           >
-            <div className="group relative p-2 rounded-full transition-all duration-200">
-              <div className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
+            <div
+              className={cn(
+                "group relative p-2 rounded-full",
+                "transition-all duration-200"
+              )}
+            >
+              <div
+                className={cn(
+                  "absolute inset-0 rounded-full bg-current",
+                  "opacity-0 group-hover:opacity-10",
+                  "transition-opacity duration-200"
+                )}
+              />
               <svg
                 width="20"
                 height="20"
@@ -66,7 +87,12 @@ const PostInteractions: React.FC = () => {
                 <path className="fill-current" d={item.path} />
               </svg>
             </div>
-            <span className="text-sm font-medium transition-colors duration-200">
+            <span
+              className={cn(
+                "text-sm font-medium",
+                "transition-colors duration-200"
+              )}
+            >
               {item.count}
             </span>
           </div>
@@ -78,9 +104,19 @@ const PostInteractions: React.FC = () => {
         {actions.map((item) => (
           <div
             key={item.id}
-            className="group relative p-2 rounded-full transition-all duration-200 cursor-pointer hover:text-icon-blue"
+            className={cn(
+              "group relative p-2 rounded-full cursor-pointer",
+              "transition-all duration-200",
+              "hover:text-icon-blue"
+            )}
           >
-            <div className="absolute inset-0 rounded-full bg-current opacity-0 group-hover:opacity-10 transition-opacity duration-200"></div>
+            <div
+              className={cn(
+                "absolute inset-0 rounded-full bg-current",
+                "opacity-0 group-hover:opacity-10",
+                "transition-opacity duration-200"
+              )}
+            />
             <svg
               width="20"
               height="20"

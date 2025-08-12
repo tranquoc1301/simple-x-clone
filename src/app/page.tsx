@@ -1,12 +1,12 @@
 import Feed from "@/components/Feed";
-import Share from "@/components/Share";
 import NavBar from "@/components/NavBar";
+import PostComposer from "@/components/PostComposer";
 
 const Homepage = () => {
   return (
     <div className="bg-black min-h-screen">
       <NavBar />
-      <Share />
+      <PostComposer />
       <Feed />
     </div>
   );

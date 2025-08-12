@@ -6,10 +6,10 @@ const Post = () => {
   return (
     <div className="p-4 pb-1 border-y-[1px] border-border-gray">
       {/* POST TYPE */}
-      <div className="flex items-center gap-2 text-sm text-text-gray mb-2 font-bold">
+      {/* <div className="flex items-center gap-2 text-sm text-text-gray mb-2 font-bold">
         icon
         <span>William13 reposted</span>
-      </div>
+      </div> */}
       {/* POST CONTENT */}
       <div className="flex gap-2">
         {/* Avatar */}
