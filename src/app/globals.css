@@ -24,4 +24,5 @@ body {
   --color-icon-green: #00ba7c;
   --color-icon-pink: #f91880;
   --color-nav-hover: rgba(231, 233, 234, 0.1);
+  --color-modal-overlay: rgba(91, 112, 131, 0.4);
 }

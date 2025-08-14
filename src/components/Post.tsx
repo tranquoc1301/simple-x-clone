@@ -1,8 +1,37 @@
 import { Image } from "@imagekit/next";
 import PostInfo from "./PostInfo";
 import PostInteractions from "./PostInteractions";
+import { imagekit } from "@/utils/imageKit";
+import { Video } from "@imagekit/next";
 
-const Post = () => {
+interface fileDetailsResponse {
+  width: number;
+  height: number;
+  filePath: string;
+  url: string;
+  fileType: string;
+  customMeta?: {
+    sensitive: boolean;
+  };
+}
+
+const Post = async () => {
+  const getFileDetails = async (fileId: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+      imagekit.getFileDetails(fileId, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result as fileDetailsResponse);
+        }
+      });
+    });
+  };
+
+  const fileDetails = await getFileDetails("689de5255c7cd75eb8f77da9");
+
+  // console.log(fileDetails);
+
   return (
     <div className="p-4 pb-1 border-y-[1px] border-border-gray">
       {/* POST TYPE */}
@@ -34,13 +63,38 @@ const Post = () => {
           </div>
           {/* Text and media */}
           <p className="mt-2">Here are some random texts in X post</p>
-          <Image
+          {/* <Image
             src="general/post.jpeg"
             alt="post"
             width={600}
             height={600}
             className="rounded-xl"
-          />
+          /> */}
+          {fileDetails && fileDetails.fileType === "image" ? (
+            <Image
+              src={fileDetails.filePath}
+              alt="post"
+              width={fileDetails.width}
+              height={fileDetails.height}
+              // className={
+              //   fileDetails.customMeta?.sensitive
+              //     ? "rounded-xl blur-lg"
+              //     : "rounded-xl"
+              // }
+              className="rounded-xl"
+              quality={80}
+            />
+          ) : (
+            <Video
+              src={fileDetails.filePath}
+              controls
+              transformation={[{}]}
+              className={`rounded-xl ${
+                fileDetails.customMeta?.sensitive ? "blur-lg" : ""
+              }`}
+            />
+          )}
+
           <PostInteractions />
         </div>
       </div>

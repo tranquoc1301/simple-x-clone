@@ -4,7 +4,7 @@ import { Image } from "@imagekit/next";
 import NextImage from "next/image";
 import { useState } from "react";
 import { cn } from "@/utils/cn";
-import { UploadMedia } from "@/actions/UploadMediaAction";
+import { postComposerAction } from "@/actions/postComposerAction";
 import ImageEditor from "./ImageEditor";
 
 const OptionList = () => {
@@ -53,8 +53,6 @@ const OptionList = () => {
 
 const PostComposer = () => {
   const [media, setMedia] = useState<File | null>(null);
-
-  const previewURL = media ? URL.createObjectURL(media) : null;
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [settings, setSettings] = useState<{
     type: "original" | "wide" | "square";
@@ -63,16 +61,36 @@ const PostComposer = () => {
     type: "original",
     sensitive: false,
   });
+  const [error, setError] = useState<string | null>(null);
+
+  const previewURL = media ? URL.createObjectURL(media) : null;
 
   const handleMediaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setMedia(file);
+      setError(null);
+    }
+  };
+
+  const handleSubmit = async (formData: FormData) => {
+    if (!media) {
+      setError("Please select an image to upload.");
+      return;
+    }
+
+    const response = await postComposerAction(formData, settings);
+    if (response.error) {
+      setError(response.error);
+    } else {
+      setError(null);
+      setMedia(null);
+      setSettings({ type: "original", sensitive: false }); //
     }
   };
 
   return (
-    <form className={cn("p-4 flex gap-4")} action={UploadMedia}>
+    <form className={cn("p-4 flex gap-4")} action={handleSubmit}>
       {/* Avatar */}
       <div className={cn("w-10 h-10 rounded-full overflow-hidden")}>
         <Image src="general/avatar.jpg" alt="avatar" width={40} height={40} />
@@ -92,14 +110,23 @@ const PostComposer = () => {
         />
         {
           // Preview selected media
-          previewURL && (
+          previewURL && media?.type.includes("image") && (
             <div className="relative overflow-hidden">
               <NextImage
                 src={previewURL}
                 alt="preview"
                 width={600}
                 height={600}
-                className="object-cover w-full h-full rounded-2xl border border-border-gray"
+                className={cn(
+                  `w-full ${
+                    settings.type === "original"
+                      ? "h-full object-contain"
+                      : settings.type === "square"
+                      ? "aspect-square object-cover"
+                      : "aspect-video object-cover"
+                  }`,
+                  "object-cover w-full h-full rounded-2xl border border-border-gray"
+                )}
               />
               <div
                 className={cn(
@@ -115,6 +142,26 @@ const PostComposer = () => {
             </div>
           )
         }
+        {
+          // Preview selected media
+          previewURL && media?.type.includes("video") && (
+            <div className="relative overflow-hidden">
+              <video
+                src={previewURL}
+                controls
+                className={cn(
+                  "w-full h-full rounded-2xl border border-border-gray"
+                )}
+              />
+              <div className="absolute top-2 right-2 bg-black bg-opacity-50 text-white h-8 w-8 flex items-center justify-center rounded-full cursor-pointer font-bold text-sm">
+                X
+              </div>
+            </div>
+          )
+        }
+
+        {/* Error Message */}
+        {error && <div className="text-red-500 text-sm">{error}</div>}
 
         {/* Editor */}
         {isEditorOpen && previewURL && (
@@ -133,7 +180,7 @@ const PostComposer = () => {
         <div className={cn("flex items-center justify-between")}>
           <input
             type="file"
-            accept="image/*"
+            accept="image/*, video/*"
             onChange={handleMediaChange}
             className="hidden"
             id="media"
