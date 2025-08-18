@@ -1,8 +1,14 @@
 import { Image } from "@imagekit/next";
-import PostInfo from "./PostInfo";
+import MoreInfo from "./MoreInfo";
 import PostInteractions from "./PostInteractions";
 import { imagekit } from "@/utils/imageKit";
 import { Video } from "@imagekit/next";
+import { MoreInfoItem } from "./MoreInfo";
+import NotInterestedIcon from "public/icons/notinterested.svg";
+import FollowIcon from "public/icons/follow.svg";
+import SubscribeIcon from "public/icons/subscribe.svg";
+import BlockIcon from "public/icons/block.svg";
+import ReportIcon from "public/icons/report.svg";
 
 interface fileDetailsResponse {
   width: number;
@@ -14,6 +20,29 @@ interface fileDetailsResponse {
     sensitive: boolean;
   };
 }
+
+const MoreInfoList: MoreInfoItem[] = [
+  {
+    icon: NotInterestedIcon,
+    text: "Not interested in this post",
+  },
+  {
+    icon: FollowIcon,
+    text: "Follow @william13",
+  },
+  {
+    icon: SubscribeIcon,
+    text: "Subscribe to @william13",
+  },
+  {
+    icon: BlockIcon,
+    text: "Block @william13",
+  },
+  {
+    icon: ReportIcon,
+    text: "Report post",
+  },
+];
 
 const Post = async () => {
   const getFileDetails = async (fileId: string): Promise<any> => {
@@ -59,7 +88,7 @@ const Post = async () => {
               <span className="text-text-gray">@William13</span>
               <span className="text-text-gray">1 day ago</span>
             </div>
-            <PostInfo />
+            <MoreInfo moreInfoList={MoreInfoList} />
           </div>
           {/* Text and media */}
           <p className="mt-2">Here are some random texts in X post</p>
