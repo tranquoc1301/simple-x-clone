@@ -3,10 +3,13 @@
 body {
   color: #ededed;
   background: black;
-  font-family: Arial, Helvetica, sans-serif;
+  /* font-family: Arial, Helvetica, sans-serif; */
 }
 
 @theme {
+  /* Local Font */
+  --font-family-chirp: var(--font-chirp), system-ui, sans-serif;
+
   /* Breakpoints */
   --breakpoint-xsm: 500px;
   --breakpoint-sm: 600px;
@@ -25,4 +28,11 @@ body {
   --color-icon-pink: #f91880;
   --color-nav-hover: rgba(231, 233, 234, 0.1);
   --color-modal-overlay: rgba(91, 112, 131, 0.4);
+
+  /* Font sizes */
+  --text-normal: 15px;
+  --text-normal-bold: {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-normal);
+  }
 }
