@@ -2,7 +2,7 @@
 
 import { ReactElement, SVGProps, useState, useEffect, useRef } from "react";
 import { Image } from "@imagekit/next";
-import NextImage from "next/image";
+import { cn } from "@/utils/cn";
 
 export interface MoreInfoItem {
   icon: (props: SVGProps<SVGSVGElement>) => ReactElement;
@@ -11,16 +11,21 @@ export interface MoreInfoItem {
 
 const MoreInfoMenu = ({ moreInfoList }: { moreInfoList: MoreInfoItem[] }) => {
   return (
-    <div className="absolute top-0 right-0 bg-black popup-menu w-[250px] z-[100] overflow-hidden">
-      {moreInfoList.map((item, index) => (
-        <div
-          key={index}
-          className="flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-nav-hover"
-        >
-          <NextImage src={item.icon} alt="icon" width={20} height={20} />
-          <span className="text-white text-normal font-bold">{item.text}</span>
-        </div>
-      ))}
+    <div className="absolute top-0 right-0 bg-black popup-menu min-w-[250px] max-w-[400px] z-[100] overflow-hidden">
+      {moreInfoList.map((item, index) => {
+        const Icon = item.icon;
+        return (
+          <div
+            key={index}
+            className="flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-nav-hover"
+          >
+            <Icon width={20} height={20} />
+            <span className="text-white text-normal font-bold text-nowrap">
+              {item.text}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -56,8 +61,14 @@ const MoreInfo = ({ moreInfoList }: { moreInfoList: MoreInfoItem[] }) => {
 
   return (
     <div className="relative" ref={wrapperRef}>
-      <div className="cursor-pointer w-4 h-4 relative" onClick={toggleMenu}>
-        <Image src="icons/infoMore.svg" alt="info" width={20} height={20} />
+      <div className="cursor-pointer w-4 h-4 " onClick={toggleMenu}>
+        <Image
+          src="icons/infoMore.svg"
+          alt="info"
+          width={20}
+          height={20}
+          className="hover:scale-120 transition-all duration-200"
+        />
       </div>
       {isMenuOpen && <MoreInfoMenu moreInfoList={moreInfoList} />}
     </div>

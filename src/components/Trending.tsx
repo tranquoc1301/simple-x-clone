@@ -1,3 +1,5 @@
+"use client";
+
 import { MoreInfoItem } from "./MoreInfo";
 import NotInterestedIcon from "public/icons/notinterested.svg";
 import MoreInfo from "./MoreInfo";
