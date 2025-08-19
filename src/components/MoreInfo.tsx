@@ -11,13 +11,21 @@ export interface MoreInfoItem {
 
 const MoreInfoMenu = ({ moreInfoList }: { moreInfoList: MoreInfoItem[] }) => {
   return (
-    <div className="absolute top-0 right-0 bg-black popup-menu min-w-[250px] max-w-[400px] z-[100] overflow-hidden">
+    <div
+      className={cn(
+        "absolute top-0 right-0 bg-black popup-menu",
+        "min-w-[250px] max-w-[400px] z-[100] overflow-hidden"
+      )}
+    >
       {moreInfoList.map((item, index) => {
         const Icon = item.icon;
         return (
           <div
             key={index}
-            className="flex items-center gap-2 py-3 px-4 cursor-pointer hover:bg-nav-hover"
+            className={cn(
+              "flex items-center gap-2 py-3 px-4 cursor-pointer",
+              "hover:bg-nav-hover"
+            )}
           >
             <Icon width={20} height={20} />
             <span className="text-white text-normal font-bold text-nowrap">
