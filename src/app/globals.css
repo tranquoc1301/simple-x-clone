@@ -28,6 +28,7 @@ body {
   --color-icon-pink: #f91880;
   --color-nav-hover: rgba(231, 233, 234, 0.1);
   --color-modal-overlay: rgba(91, 112, 131, 0.4);
+  --color-righr-bar-hover: rgb(113, 118, 123);
 
   /* Border templates */
   --border-popup-menu: 1px solid var(--color-border-gray);

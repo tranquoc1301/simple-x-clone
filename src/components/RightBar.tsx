@@ -1,14 +1,14 @@
 import Search from "./Search";
 import Trending from "./Trending";
-import Recommendations from "./Recommendations";
+import Following from "./Following";
 import Link from "next/link";
 
 const RightBar = () => {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 sticky top-0 h-screen">
       <Search />
       <Trending />
-      <Recommendations />
+      <Following />
       <div className="text-text-gray text-xs flex flex-wrap gap-x-4 gap-y-2">
         <Link href="/" className="hover:underline">
           Terms of Service

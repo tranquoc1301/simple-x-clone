@@ -76,7 +76,7 @@ const Post = () => {
             </div>
             <MoreInfo moreInfoList={MoreInfoList} />
           </div>
-          <p className="mt-2">Here are some random texts in X post</p>
+          <p>Here are some random texts in X post</p>
           {error && <p className="text-red-500">{error}</p>}
           {fileDetails ? (
             fileDetails.fileType === "image" ? (
